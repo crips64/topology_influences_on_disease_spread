@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Крупные сгенерированные данные (раскомментируйте при необходимости)
+# data/simulations/
+# data/splits/
+# data/meta/runs.csv

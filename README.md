@@ -16,18 +16,25 @@
 ```
 topology_influences_on_disease_spread/
 ├── create_data_regular_networks.ipynb  # Основной ноутбук для генерации данных
-├── README.md                           # Этот файл
-├── Data/
-│   ├── new/                            # Новые сгенерированные данные
-│   └── old/                            # Старые данные
-├── initial data/                       # Исходные данные симуляций (CSV файлы)
-│   ├── seir_seed_0.csv
-│   ├── seir_seed_1.csv
-│   └── ... (множество файлов с разными сидами)
-├── test/                               # Тестовые данные
-├── train/                              # Обучающие данные
-└── val/                                # Валидационные данные
+├── graph_examples.ipynb
+├── README.md
+├── tools/
+│   ├── migrate_data_layout.py           # перенос data/new (или Data/new) и train/val/test в data/
+│   ├── rebuild_runs_legacy_grid.py      # восстановление data/meta/runs.csv для старых CSV (порядок вложенности циклов как в старой версии ноутбука)
+│   └── remove_legacy_initial_data.py    # удаление устаревшей папки initial data/ (только с флагом --yes)
+└── data/
+    ├── simulations/                     # Траектории: simulations/<graph_kind>/lam=<k>/seir_seed_*.csv
+    ├── meta/
+    │   └── runs.csv                     # Манифест: relative_path, graph_kind, lam, tau, seed_in_graph
+    └── splits/
+        ├── train/
+        ├── val/
+        └── test/
 ```
+
+Корневая папка **`initial data/`** (с пробелом в имени) — устаревший артефакт старого пайплайна: траектории и манифест теперь в `data/simulations/` и `data/meta/runs.csv`. Код ноутбука её не использует; после проверки можно удалить вручную или командой `python tools/remove_legacy_initial_data.py --yes`.
+
+Перед каждым блоком симуляции для выбранного типа графа каталог `data/simulations/<graph_kind>/` **очищается**, затем заново создаются подкаталоги `lam=*` для всех значений из `lam_boundaries`.
 
 ## Зависимости
 
@@ -61,12 +68,28 @@ pip install networkx numpy matplotlib seaborn EoN tqdm pandas scikit-learn
 Откройте `create_data_regular_networks.ipynb` в Jupyter Notebook или JupyterLab и выполните ячейки последовательно.
 
 Ноутбук содержит:
-1. Импорт библиотек и определение функций
+1. Импорт библиотек, константы путей `DATA_ROOT` и создание каталогов `data/simulations`, `data/meta`, `data/splits`
 2. Визуализацию различных типов сетей
-3. Функцию симуляции SEIR с внешним импортом
-4. Генерацию данных для различных параметров
-5. Сохранение результатов в CSV файлы
+3. Функцию симуляции SEIR с внешним импортом (параметр `rho` не используется)
+4. Генерацию данных для различных параметров и запись манифеста `data/meta/runs.csv`
+5. Сплит train/val/test и копирование в `data/splits/`
 6. Анализ и визуализацию полученных траекторий
+
+### Миграция со старой раскладки
+
+Если у вас остались каталоги `data/new` (или старый вариант `Data/new`) или корневые `train/`, `val/`, `test/`:
+
+```bash
+python tools/migrate_data_layout.py
+```
+
+Если CSV были сгенерированы **старой** версией ноутбука (с вложенным циклом по `rho`), восстановите манифест:
+
+```bash
+python tools/rebuild_runs_legacy_grid.py
+```
+
+После **новой** генерации в ноутбуке манифест обновляется автоматически при сохранении симуляций.
 
 ### Параметры модели
 
@@ -74,13 +97,12 @@ pip install networkx numpy matplotlib seaborn EoN tqdm pandas scikit-learn
 - `tau`: Скорость передачи инфекции
 - `alpha`: Скорость перехода из Exposed в Infected
 - `gamma`: Скорость выздоровления
-- `rho`: Доля изначально инфицированных
 - `lam`: Параметр Poisson для внешнего импорта инфекции
 - `tmax`: Максимальное время симуляции (дни)
 
 ### Формат данных
 
-Каждый CSV файл содержит следующие столбцы:
+Каждый CSV траектории содержит следующие столбцы:
 - `S`: Количество восприимчивых (Susceptible)
 - `E`: Количество скрытых (Exposed)
 - `I`: Количество инфицированных (Infected)
