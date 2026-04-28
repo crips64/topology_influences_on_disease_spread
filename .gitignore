@@ -10,7 +10,7 @@ build/
 # Jupyter
 .ipynb_checkpoints/
 
-# Крупные сгенерированные данные (раскомментируйте при необходимости)
-# data/simulations/
-# data/splits/
-# data/meta/runs.csv
+# Данные
+data/simulations/
+data/splits/
+data/meta/runs.csv
