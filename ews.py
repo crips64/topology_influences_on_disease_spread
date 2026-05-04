@@ -190,7 +190,7 @@ def plot_ews_grid_by_lam(
     for j in range(n_lam):
         axes[2, j].set_xlabel("t (day index)")
     fig.suptitle(
-        f"EWS (rolling window={window}) averaged over τ and seeds — {graph_kind}",
+        f"EWS (window={window}) - {graph_kind}",
         fontsize=11,
     )
     fig.tight_layout()
