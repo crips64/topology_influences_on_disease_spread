@@ -11,7 +11,5 @@ build/
 .ipynb_checkpoints/
 
 # Данные
-data/simulations/
-data/splits/
-data/meta/runs.csv
+/data/
 articles/
