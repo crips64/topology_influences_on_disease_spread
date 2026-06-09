@@ -11,5 +11,5 @@ build/
 .ipynb_checkpoints/
 
 # Данные
-/data/
+#/data/
 articles/
