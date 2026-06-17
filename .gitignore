@@ -12,4 +12,5 @@ build/
 
 # Данные
 /data/
-articles/
+
+for_article/
