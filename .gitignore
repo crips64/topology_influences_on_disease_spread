@@ -1,16 +1,7 @@
-# Python
-__pycache__/
-*.py[cod]
-.Python
-*.egg-info/
-.eggs/
-dist/
-build/
+# Репозиторий содержит только документацию и два основных ноутбука.
+/*
 
-# Jupyter
-.ipynb_checkpoints/
-
-# Данные
-/data/
-
-for_article/
+!/.gitignore
+!/README.md
+!/create_data_regular_networks.ipynb
+!/city_synthetic_ai_classification_analysis.ipynb
