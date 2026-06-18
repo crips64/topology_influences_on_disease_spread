@@ -10,7 +10,7 @@
 Работа состоит из двух последовательных этапов:
 
 1. [`create_data_regular_networks.ipynb`](create_data_regular_networks.ipynb) моделирует SEIR-процесс с внешним импортом инфекции на двух типах графов и сохраняет синтетические траектории.
-2. [`city_synthetic_ai_classification_analysis.ipynb`](city_synthetic_ai_classification_analysis.ipynb) извлекает признаки формы волн, обучает калиброванный `RandomForestClassifier` на синтетических данных и классифицирует реальные городские волны.
+2. [`city_synthetic_classification_analysis.ipynb`](city_synthetic_classification_analysis.ipynb) извлекает признаки формы волн, обучает калиброванный `RandomForestClassifier` на синтетических данных и классифицирует реальные городские волны.
 
 Используемые топологии:
 
@@ -102,7 +102,7 @@ jupyter lab
 
 ### 2. Классификация городских волн
 
-После генерации синтетики поместите городской набор данных в `data/indices_in_big_cities.xlsx`. Затем откройте `city_synthetic_ai_classification_analysis.ipynb` и выполните все ячейки по порядку.
+После генерации синтетики поместите городской набор данных в `data/indices_in_big_cities.xlsx`. Затем откройте `city_synthetic_classification_analysis.ipynb` и выполните все ячейки по порядку.
 
 Ноутбук:
 
@@ -115,11 +115,11 @@ jupyter lab
 
 Ключевые таблицы создаются в памяти ноутбука:
 
-- `synthetic_ai_eval` — метрики на синтетической holdout-выборке;
-- `wave_ai_classification` — классификация отдельных городских волн;
-- `city_ai_summary` — агрегированные результаты по городам.
+- `synthetic_eval` — метрики на синтетической holdout-выборке;
+- `wave_classification` — классификация отдельных городских волн;
+- `city_summary` — агрегированные результаты по городам.
 
-При интерпретации смотрите не только на `predicted_class`, но и на `ai_confidence`, `probability_margin` и `weak_ai_match`. Значение `weak_ai_match = True` означает, что уверенность или отрыв между классами ниже 10-го перцентиля правильно классифицированных синтетических примеров соответствующего класса.
+При интерпретации смотрите не только на `predicted_class`, но и на `confidence`, `probability_margin` и `weak_match`. Значение `weak_match = True` означает, что уверенность или отрыв между классами ниже 10-го перцентиля правильно классифицированных синтетических примеров соответствующего класса.
 
 ## Локальная структура данных
 
